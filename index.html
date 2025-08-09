@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nike Redesign | Ultra Modern</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <!-- GSAP Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    /* ===== GLOBAL STYLES ===== */
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --red: #ff0000;
+      --neon: #ff0055;
+      --gray: #1a1a1a;
+      --bg: #0a0a0a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    /* ===== PRELOADER ===== */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 5px solid rgba(255,255,255,0.1);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== NAVIGATION ===== */
+    .navbar {
+      position: fixed;
+      width: 100%;
+      padding: 25px 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      transition: all 0.4s ease;
+    }
+
+    .navbar.scrolled {
+      padding: 15px 0;
+      background: rgba(0,0,0,0.9);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+    }
+
+    .logo span {
+      color: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.1rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--red);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cta-button {
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: var(--red);
+      color: var(--white);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255,0,0,0.3);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7)), 
+                  url('https://images.unsplash.com/photo-1600269452121-4f2416e55c28?q=80&w=1920&auto=format&fit=crop') no-repeat center/cover;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-title {
+      font-size: 6rem;
+      line-height: 0.9;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--white);
+      position: relative;
+    }
+
+    .hero-title::before {
+      content: 'JUST DO IT.';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      color: var(--red);
+      overflow: hidden;
+      white-space: nowrap;
+      animation: textReveal 2s ease forwards 0.5s;
+    }
+
+    @keyframes textReveal {
+      to { width: 100%; }
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.5s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .hero-cta {
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease forwards 2s;
+    }
+
+    @keyframes fadeUp {
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-cta:hover {
+      background: var(--white);
+      color: var(--black);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(255,0,0,0.4);
+    }
+
+    .hero-shoe {
+      position: absolute;
+      right: 10%;
+      bottom: 10%;
+      width: 600px;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-shoe img {
+      width: 100%;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+    }
+
+    /* ===== PRODUCTS SECTION ===== */
+    .products {
+      background: var(--gray);
+      position: relative;
+    }
+
+    .section-title {
+      font-size: 4rem;
+      text-align: center;
+      margin-bottom: 80px;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      color: var(--red);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .product-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .product-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .product-image {
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.1);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--red);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .product-info {
+      padding: 25px;
+    }
+
+    .product-info h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .product-info p {
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .add-to-cart {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--white);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+      background: var(--red);
+      border-color: var(--red);
+      transform: translateY(-3px);
+    }
+
+    /* ===== CART MODAL ===== */
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100%;
+      background: var(--gray);
+      z-index: 1000;
+      transition: right 0.4s ease;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .cart-modal.open {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      margin-bottom: 30px;
+    }
+
+    .cart-item {
+      display: flex;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .cart-item-details h4 {
+      margin-bottom: 5px;
+    }
+
+    .cart-item-price {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .cart-total {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    /* ===== CUSTOMER CARE ===== */
+    .customer-care {
+      background: var(--black);
+      padding: 80px 0;
+    }
+
+    .care-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+    }
+
+    .care-form {
+      background: rgba(255,255,255,0.05);
+      padding: 40px;
+      border-radius: 20px;
+    }
+
+    .care-form h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: var(--red);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 5px;
+      color: var(--white);
+    }
+
+    .form-group textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    .submit-btn {
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .care-info {
+      padding: 20px;
+    }
+
+    .care-info h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: var(--red);
+    }
+
+    .care-info p {
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--black);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-col h4 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--red);
+    }
+
+    .footer-col a {
+      display: block;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 10px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--white);
+      transform: translateX(5px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 992px) {
+      .hero-shoe {
+        width: 400px;
+        opacity: 0.7;
+      }
+      
+      .care-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 4rem;
+      }
+      
+      .hero-shoe {
+        display: none;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .cart-modal {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">NIKE<span>.</span></a>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#care">Customer Care</a>
+      </div>
+      <button class="cta-button" id="cart-button">Cart (0)</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">JUST DO IT.</h1>
+        <p class="hero-subtitle">Experience the future of athletic performance with our revolutionary designs</p>
+        <button class="hero-cta">Explore Collection</button>
+      </div>
+      <div class="hero-shoe">
+        <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png" alt="Nike Air Max" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="products">
+    <div class="container">
+      <h2 class="section-title">FEATURED <span>PRODUCTS</span></h2>
+      <div class="product-grid">
+        <!-- Product 1 -->
+        <div class="product-card">
+          <div class="product-image">
+            <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png" alt="Nike Air Max" />
+            <div class="product-badge">New</div>
+          </div>
+          <div class="product-info">
+            <h3>Nike Air Max 270</h3>
+            <p>Ultra-comfortable running shoes with Max Air cushioning</p>
+            <div class="product-footer">
+              <span class="price">$150</span>
+              <button class="add-to-cart" data-id="1" data-name="Nike Air Max 270" data-price="150" data-image="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+          <div class="product-image">
+            <img src="https://www.prodirectsoccer.com/productimages/V3_1_Gallery_1/V3_1_Gallery_1_0284594.jpg" alt="Nike Jordan" />
+            <div class="product-badge">Bestseller</div>
+          </div>
+          <div class="product-info">
+            <h3>Nike Jordan 1 Mid</h3>
+            <p>Iconic basketball-inspired design</p>
+            <div class="product-footer">
+              <span class="price">$125</span>
+              <button class="add-to-cart" data-id="2" data-name="Nike Jordan 1 Mid" data-price="125" data-image="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/b7tphpkfnmdjvhucrenk/air-jordan-1-mid-se-mens-shoes-5hCzXh.png">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+          <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nike Blazer" />
+            <div class="product-badge">Classic</div>
+          </div>
+          <div class="product-info">
+            <h3>Nike Blazer Mid</h3>
+            <p>Retro basketball style with modern comfort</p>
+            <div class="product-footer">
+              <span class="price">$100</span>
+              <button class="add-to-cart" data-id="3" data-name="Nike Blazer Mid" data-price="100" data-image="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/7c12a2a7-6c3f-4c19-aa51-2c2a7b4c4a7a/blazer-mid-77-vintage-mens-shoes-nw30B2.png">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW PRODUCT added with image -->
+        <div class="product-card">
+          <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1618354690632-5f0b3e79f0d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="New Nike Shoe" />
+            <div class="product-badge">Limited</div>
+          </div>
+          <div class="product-info">
+            <h3>New Nike Runner</h3>
+            <p>Lightweight running shoe for everyday performance</p>
+            <div class="product-footer">
+              <span class="price">$130</span>
+              <button class="add-to-cart" data-id="4" data-name="New Nike Runner" data-price="130" data-image="https://images.unsplash.com/photo-1618354690632-5f0b3e79f0d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Care Section -->
+  <section id="care" class="customer-care">
+    <div class="container care-container">
+      <div class="care-form">
+        <h3>Contact Customer Care</h3>
+        <form id="care-form">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+      <div class="care-info">
+        <h3>We're Here to Help</h3>
+        <p>Our customer care team is available 24/7 to assist you with any questions about our products, orders, or returns.</p>
+        <div class="contact-method">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+          </div>
+          <span>+1 (800) 555-1963</span>
+        </div>
+        <div class="contact-method">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+          </div>
+          <span>support@nike-redesign.com</span>
+        </div>
+        <div class="contact-method">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="10" r="3" />
+              <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" />
+            </svg>
+          </div>
+          <span>123 Sport Ave, Portland, OR</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Modal -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="close-cart" id="close-cart">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be added here dynamically -->
+    </div>
+    <div class="cart-total" id="cart-total">
+      Total: $0.00
+    </div>
+    <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>NIKE</h4>
+          <p>Engineered for athletes. Designed for everyone.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <a href="#">Men</a>
+          <a href="#">Women</a>
+          <a href="#">Kids</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">Contact Us</a>
+          <a href="#">Returns</a>
+          <a href="#">Shipping</a>
+        </div>
+        <div class="footer-col">
+          <h4>Follow Us</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Twitter</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>© 2024 Nike Redesign. Not affiliated with Nike, Inc.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== JAVASCRIPT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      // Preloader
+      window.addEventListener('load', () => {
+        gsap.to('.preloader', {
+          opacity: 0,
+          duration: 0.8,
+          onComplete: () => {
+            document.querySelector('.preloader').style.display = 'none';
+          }
+        });
+      });
+
+      // Navbar scroll effect
+      window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+
+      // Product hover 3D effect
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const x = e.offsetX;
+          const y = e.offsetY;
+          const centerX = card.offsetWidth / 2;
+          const centerY = card.offsetHeight / 2;
+
+          const rotateX = (y - centerY) / 20;
+          const rotateY = (centerX - x) / 20;
+
+          gsap.to(card, {
+            rotationX: rotateX,
+            rotationY: rotateY,
+            transformOrigin: 'center',
+            ease: 'power1.out',
+            duration: 0.5
+          });
+        });
+
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            rotationX: 0,
+            rotationY: 0,
+            ease: 'power1.out',
+            duration: 0.5
+          });
+        });
+      });
+
+      // Scroll animations
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.utils.toArray('section').forEach(section => {
+        gsap.from(section, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none none"
+          }
+        });
+      });
+
+      // Hero shoe float animation
+      gsap.to('.hero-shoe', {
+        y: 30,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+
+      // Cart functionality
+      const cart = [];
+      const cartButton = document.getElementById('cart-button');
+      const cartModal = document.getElementById('cart-modal');
+      const closeCart = document.getElementById('close-cart');
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      const checkoutBtn = document.getElementById('checkout-btn');
+
+      // Toggle cart modal
+      cartButton.addEventListener('click', () => {
+        cartModal.classList.add('open');
+      });
+
+      closeCart.addEventListener('click', () => {
+        cartModal.classList.remove('open');
+      });
+
+      // Add to cart functionality
+      document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const product = {
+            id: e.target.dataset.id,
+            name: e.target.dataset.name,
+            price: parseFloat(e.target.dataset.price),
+            image: e.target.dataset.image
+          };
+
+          // Check if product already in cart
+          const existingItem = cart.find(item => item.id === product.id);
+
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            product.quantity = 1;
+            cart.push(product);
+          }
+
+          updateCart();
+
+          // Show cart modal
+          cartModal.classList.add('open');
+
+          // Animate button
+          gsap.to(e.target, {
+            backgroundColor: '#00ff00',
+            duration: 0.3,
+            yoyo: true,
+            repeat: 1
+          });
+        });
+      });
+
+      // Update cart UI
+      function updateCart() {
+        // Clear current items
+        cartItems.innerHTML = '';
+        let total = 0;
+
+        cart.forEach(item => {
+          total += item.price * item.quantity;
+
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item';
+          cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-item-details">
+              <h4>${item.name}</h4>
+              <p>$${item.price.toFixed(2)} × ${item.quantity}</p>
+              <p class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+            </div>
+          `;
+          cartItems.appendChild(cartItem);
+        });
+
+        // Update total
+        document.getElementById('cart-total').textContent = 'Total: $' + total.toFixed(2);
+
+        // Update button
+        const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-button').textContent = `Cart (${itemCount})`;
+      }
+
+      // Checkout
+      document.getElementById('checkout-btn').addEventListener('click', () => {
+        if (cart.length === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+        alert('Checkout functionality would go here!\nTotal: $' + cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2));
+      });
+
+      // Customer Care form
+      document.getElementById('care-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Collect data
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+
+        console.log({ name, email, subject, message });
+        alert('Thank you for your message! Our team will get back to you soon.');
+        e.target.reset();
+      });
+    });
+  </script>
+</body>
+</html>
